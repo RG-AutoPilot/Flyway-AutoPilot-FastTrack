@@ -15,7 +15,7 @@ jobs:
     runs-on: "self-hosted"
     env:
       DATA_IMAGE_NAME: "AutoPilot-Flyway-MSSQL"
-      DATA_CONTAINER_NAME: "Autopilot-GitHub-Actions-Build-Validate_MSSQL-${{ github.run_number }}-$(date +'%Y%m%d%H%M%S')"
+      DATA_CONTAINER_NAME: "Autopilot-GitHub-Actions-Build-Validate_MSSQL-${{ github.run_number }}"
       PROXY_PORT: "1433"
     steps:
       - name: Checkout Code
@@ -72,9 +72,12 @@ jobs:
           RGCLONE_ACCESS_TOKEN: ${{ secrets.RGCLONE_ACCESS_TOKEN }}
         run: |
           # Spin up a Data Container for chosen Image
-          echo "Creating data container"
+          echo "Check if Data Container Already Exists"
           
-          output=$(rgclone create dc -n "$DATA_CONTAINER_NAME" -i "$DATA_IMAGE_NAME" -t 20m -o json)
+          if ! rgclone get data-container "$DATA_CONTAINER_NAME" &> /dev/null ; then
+            echo "Creating container for $DATA_CONTAINER_NAME"
+            output=$(rgclone create dc -n "$DATA_CONTAINER_NAME" -i "$DATA_IMAGE_NAME" -t 20m -o json)
+          fi
           
           # Parse JSON output using jq
           dbUser=$(echo "$output" | jq -r '.user')
