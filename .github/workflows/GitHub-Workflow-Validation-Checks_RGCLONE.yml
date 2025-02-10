@@ -1,11 +1,11 @@
 name: GitHub - Pipeline Validation Workflow
 
 on:
-  # pull_request:
-  #   branches:
-  #     - release
-  # schedule:
-  #   - cron: "0 3 * * *"  # Runs at 3 AM UTC every night
+  pull_request:
+    branches:
+      - release
+  schedule:
+    - cron: "0 3 * * *"  # Runs at 3 AM UTC every night
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
