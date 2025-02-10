@@ -57,7 +57,7 @@ jobs:
           RGCLONE_API_ENDPOINT: ${{ secrets.RGCLONE_API_ENDPOINT }}
           RGCLONE_ACCESS_TOKEN: ${{ secrets.RGCLONE_ACCESS_TOKEN }}
         run: |
-          output=$(./rgclone get di "$DATA_IMAGE_NAME" --ignore-not-found -o json)
+          output=$(rgclone get di "$DATA_IMAGE_NAME" --ignore-not-found -o json)
 
           if [[ -z "$output" ]]; then
               echo "Image does not exist. Creating image..."
@@ -74,7 +74,7 @@ jobs:
           # Spin up a Data Container for chosen Image
           echo "Creating data container"
           
-          output=$(./rgclone create dc -n "$DATA_CONTAINER_NAME" -i "$DATA_IMAGE_NAME" -t 20m -o json)
+          output=$(rgclone create dc -n "$DATA_CONTAINER_NAME" -i "$DATA_IMAGE_NAME" -t 20m -o json)
           
           # Parse JSON output using jq
           dbUser=$(echo "$output" | jq -r '.user')
