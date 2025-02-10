@@ -41,7 +41,7 @@ jobs:
           TEMP_DIR=$(mktemp -d)
       
           # Download and extract rgclone
-          curl -H "Authorization: Bearer $RGCLONE_ACCESS_TOKEN" -L "$RGCLONE_API_ENDPOINT/cloning-api/download/cli/linux-amd64" | tar xz -C "$TEMP_DIR"
+          curl $RGCLONE_API_ENDPOINT/cloning-api/download/cli/linux-amd64 | tar xz -C "$TEMP_DIR"
       
           # Move rgclone to the install directory
           sudo mv "$TEMP_DIR/rgclone" "$INSTALL_DIR/"
