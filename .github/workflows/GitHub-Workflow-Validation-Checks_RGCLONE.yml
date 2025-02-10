@@ -27,25 +27,29 @@ jobs:
           RGCLONE_API_ENDPOINT: ${{ secrets.RGCLONE_API_ENDPOINT }}
           RGCLONE_ACCESS_TOKEN: ${{ secrets.RGCLONE_ACCESS_TOKEN }}
         run: |
-          # Define variables
-          downloadUrl="${RGCLONE_API_ENDPOINT}cloning-api/download/cli/linux-amd64"
-          zipFile="./rgclone.zip"
-          rgCloneLocation="."
+          # Check if rgclone is already installed
+          if command -v rgclone &> /dev/null; then
+            echo "rgclone is already installed. Skipping installation."
+            rgclone version
+            exit 0
+          fi
       
-          echo "  Downloading rgclone CLI zip file..."
-          echo "    from: $downloadUrl"
-          echo "    to:   $zipFile"
+          echo "rgclone not found. Installing..."
       
-          # Download the file
-          curl -H "Authorization: Bearer $RGCLONE_ACCESS_TOKEN" -L "$downloadUrl" -o "$zipFile"
+          # Define install location
+          INSTALL_DIR="/usr/local/bin"
+          TEMP_DIR=$(mktemp -d)
       
-          echo "  Extracting zip to: $rgCloneLocation"
+          # Download and extract rgclone
+          curl -H "Authorization: Bearer $RGCLONE_ACCESS_TOKEN" -L "$RGCLONE_API_ENDPOINT/cloning-api/download/cli/linux-amd64" | tar xz -C "$TEMP_DIR"
       
-          # Extract the zip file
-          unzip -o "$zipFile" -d "$rgCloneLocation"
+          # Move rgclone to the install directory
+          sudo mv "$TEMP_DIR/rgclone" "$INSTALL_DIR/"
+          sudo chmod +x "$INSTALL_DIR/rgclone"
       
-          # Make rgclone executable
-          chmod +x ./rgclone
+          # Verify installation
+          echo "rgclone installed successfully."
+          rgclone version
 
       - name: Validate Data Image
         id: createDataImage
