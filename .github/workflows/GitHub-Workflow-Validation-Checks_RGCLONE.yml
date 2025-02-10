@@ -15,7 +15,7 @@ jobs:
     runs-on: "self-hosted"
     env:
       DATA_IMAGE_NAME: "AutoPilot-Flyway-MSSQL"
-      DATA_CONTAINER_NAME: "Autopilot-GitHub-Actions-Build-Validate_MSSQL-${{ github.run_number }}-$(date +'%Y-%m-%d_%H-%M-%S')"
+      DATA_CONTAINER_NAME: "Autopilot-GitHub-Actions-Build-Validate_MSSQL-${{ github.run_number }}-$(date +'%Y%m%d%H%M%S')"
       PROXY_PORT: "1433"
     steps:
       - name: Checkout Code
