@@ -14,7 +14,7 @@ jobs:
     name: Spin Up RGClone Validation Container
     runs-on: "self-hosted"
     env:
-      DATA_IMAGE_NAME: "AutoPilot-Flyway-MSSQL"
+      DATA_IMAGE_NAME: "Autopilot-Flyway-MSSQL"
       DATA_CONTAINER_NAME: "Autopilot-GitHub-Actions-Build-Validate_MSSQL-${{ github.run_number }}"
       PROXY_PORT: "1433"
     steps:
