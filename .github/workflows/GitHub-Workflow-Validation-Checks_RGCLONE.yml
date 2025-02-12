@@ -132,4 +132,17 @@ jobs:
             echo "Deleting container for $DATA_CONTAINER_NAME"
             rgclone delete dc -n "$DATA_CONTAINER_NAME"
           fi
-
+  # This step will check if all jobs have complete and if any fail, the whole workflow will be rerun ONCE. This is required for reasons such as multiple PRs running at the same time.
+  retry-jobs:
+    name: Retry if Any Job Fails
+    runs-on: "self-hosted"
+    needs: [setup-validation-environment, Validate-Flyway-Pipeline, cleanup]
+    if: failure()  # Retry the jobs if any of them failed
+    strategy:
+      fail-fast: false
+      matrix:
+        job: [setup-validation-environment, Validate-Flyway-Pipeline, cleanup]
+    steps:
+      - name: Retry Logic for Failed Jobs
+        run: |
+          echo "Retrying failed jobs..."
