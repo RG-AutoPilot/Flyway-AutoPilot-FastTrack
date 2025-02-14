@@ -1,0 +1,64 @@
+name: Update Pipeline Definitions
+
+permissions:
+  contents: write
+  pull-requests: write
+
+on:
+  workflow_dispatch:  # Allows manual triggering
+  pull_request:
+    branches:
+      - release  # Triggers on PRs to release
+      - 'feature/*'  # Triggers on PRs to any feature branch
+
+jobs:
+  validate-and-update:
+    runs-on: "self-hosted"
+    strategy:
+      matrix:
+        repo: 
+          - RG-AutoPilot/Flyway-AutoPilot-FastTrack
+          - RG-AutoPilot/Flyway-AutoPilot-PostgreSQL
+          - RG-AutoPilot/Flyway-AutoPilot-BackUp
+
+    steps:
+      - name: Checkout pipeline definitions repo
+        uses: actions/checkout@v4
+
+      - name: Clone target repository
+        run: |
+          git clone https://github.com/${{ matrix.repo }}.git
+          cd $(basename ${{ matrix.repo }})
+          git checkout -b update-pipeline-${{ github.run_id }}
+
+      - name: Copy updated YAML files
+        run: |
+          echo "Current working directory: $(pwd)"
+          echo "Repo to Copy To: $(basename ${{ matrix.repo }})/.github/workflows/"
+          cp -r ./.github/workflows/*.yml $(basename ${{ matrix.repo }})/.github/workflows/
+          cp -r ./AzureDevOps/*.yml $(basename ${{ matrix.repo }})/AzureDevOps/
+
+      - name: Push changes and create PR
+        run: |
+          cd $(basename ${{ matrix.repo }})
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add .github/workflows/
+          git add AzureDevOps/
+          git commit -m "Update pipeline definitions from pipeline-definitions repo"
+          
+          # Update the remote URL to use the personal access token (PAT)
+          git remote set-url origin https://x-access-token:${{ secrets.PAT }}@github.com/${{ matrix.repo }}.git
+          
+          # Push the new branch to the forked repository
+          git push origin update-pipeline-${{ github.run_id }}
+          
+          # Create a PR to the 'release' branch of the same forked repository
+          gh pr create --repo ${{ matrix.repo }} \
+            --base release \
+            --head update-pipeline-${{ github.run_id }} \
+            --title "Update pipeline definitions" \
+            --body "This PR updates the YAML pipelines to the latest version."
+      
+        env:
+          GH_TOKEN: ${{ secrets.PAT }}
