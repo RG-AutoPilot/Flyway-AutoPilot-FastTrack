@@ -13,6 +13,7 @@ url = "jdbc:sqlserver://localhost;databaseName=AutoPilotShadow;encrypt=true;inte
 displayName = "Shadow database"
 provisioner = "clean"
 
+
 [environments.Prod]
 url = "jdbc:sqlserver://localhost;databaseName=AutoPilotProd;encrypt=true;integratedSecurity=true;trustServerCertificate=true"
 displayName = "Production Database"
