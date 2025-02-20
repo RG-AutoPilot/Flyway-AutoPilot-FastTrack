@@ -3,6 +3,7 @@ name = "AutoPilot - FastTrack"
 databaseType = "SqlServer"
 
 
+
 [environments.development]
 url = "jdbc:sqlserver://localhost;databaseName=AutoPilotDev;encrypt=true;integratedSecurity=true;trustServerCertificate=true"
 schemas = [ ]
