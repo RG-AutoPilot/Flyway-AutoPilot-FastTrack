@@ -69,8 +69,6 @@ if ($flywayVersion -ieq "latest") {
     Write-Output "Flyway Version Number Variable is not 'latest', Current Version to Install: $flywayVersion"
 }
 
-Write-Host "Using Flyway CLI version $flywayVersion"
-
 # Check if Flyway is already installed
 if (Get-Command flyway -ErrorAction SilentlyContinue) {
     Write-Host "Flyway Already Installed - Checking Current Version Number"
@@ -85,7 +83,7 @@ if (Get-Command flyway -ErrorAction SilentlyContinue) {
         Exit
     }
 } else {
-    Write-Host "Flyway is not installed. Proceeding with installation."
+    Write-Host "Flyway is not installed. Proceeding with installation of Flyway version: $flywayVersion"
 }
 
 # Stop Running Flyway Processes Before Installation
@@ -101,22 +99,24 @@ $ExtractPath = "$flywayInstallDirectory"
 if (-Not (Test-Path $ExtractPath)) {
     # Create the directory if it doesn't exist
     New-Item $ExtractPath -ItemType Directory
-    Write-Host "Folder Created successfully"
+    Write-Host "Folder Path '$ExtractPath' Created successfully"
 } else {
-    Write-Host "Folder Exists"
+    Write-Host "Folder Path '$ExtractPath' Already Exists"
 }
 
 # Ensure that the Flyway Temp extraction directory exists
 if (-Not (Test-Path $TempExtractPath)) {
     # Create the directory if it doesn't exist
     New-Item $TempExtractPath -ItemType Directory
-    Write-Host "Folder Created successfully"
+    Write-Host "Folder Path '$TempExtractPath' Created successfully"
 } else {
-    Write-Host "Folder Exists"
+    Write-Host "Folder Path '$TempExtractPath' Already Exists"
 }
 
 $ProgressPreference = 'SilentlyContinue'
+Write-Host "Downloading Flyway Version: $flywayVersion"
 Invoke-WebRequest -Uri $Url -OutFile $DownloadZipFile -UseBasicParsing
+Write-Host "Extracting Flyway files to temporary location"
 Expand-Archive -Path $DownloadZipFile -DestinationPath $TempExtractPath -Force
 
 if (-Not (Test-Path "$TempExtractPath\\flyway-$flywayVersion")) {
@@ -124,20 +124,50 @@ if (-Not (Test-Path "$TempExtractPath\\flyway-$flywayVersion")) {
     Exit 1
 }
 
-# Atomic Directory Swap
+# Atomic Directory Swap with Fallback
+Write-Output "Replacing old Flyway installation..."
 $ExtractPathOld = "$ExtractPath-Old"
+$renameSucceeded = $false
 if (Test-Path $ExtractPath) {
     if (Test-Path $ExtractPathOld) {
+        Write-Host "Removing temporary files from '$ExtractPathOld'"
         Remove-Item -Path $ExtractPathOld -Recurse -Force
     }
-    Rename-Item -Path $ExtractPath -NewName $ExtractPathOld -Force
+    try {
+        Write-Host "Attempting to rename active Flyway CLI location from '$ExtractPath' to '$ExtractPathOld'"
+        Rename-Item -Path $ExtractPath -NewName $ExtractPathOld -Force
+        $renameSucceeded = $true
+    } catch {
+        Write-Warning "Failed to rename $ExtractPath to $ExtractPathOld. Access denied. Attempting to override existing files instead."
+    }
 }
 
-# Move the extracted files from the temp folder to the correct path
-Move-Item -Path "$TempExtractPath\\flyway-$flywayVersion\\*" -Destination "$ExtractPath" -Force
+if ($renameSucceeded) {
+    Write-Host "Moving Flyway Version $flywayVersion files to $ExtractPath"
+    Move-Item -Path "$TempExtractPath\\flyway-$flywayVersion\\*" -Destination "$ExtractPath" -Force
+} else {
+    Write-Host "Moving extracted Flyway Version $flywayVersion files to $ExtractPath"
+    Get-ChildItem -Path "$TempExtractPath\\flyway-$flywayVersion" -Recurse | ForEach-Object {
+        $relativePath = $_.FullName.Substring(("$TempExtractPath\\flyway-$flywayVersion").Length).TrimStart('\')
+        $dest = Join-Path $ExtractPath $relativePath
+
+        if (!(Test-Path (Split-Path -Parent $dest))) {
+            New-Item -ItemType Directory -Path (Split-Path -Parent $dest) -Force | Out-Null
+        }
+
+        if (Test-Path $dest) {
+            Remove-Item -Path $dest -Recurse -Force
+        }
+
+        Move-Item -Path $_.FullName -Destination $dest -Force
+    }
+}
 
 # Cleanup
-Remove-Item -Path $ExtractPathOld -Recurse -Force
+Write-Output "Cleaning up temporary files..."
+if (Test-Path $ExtractPathOld) {
+    Remove-Item -Path $ExtractPathOld -Recurse -Force
+}
 Remove-Item -Path "$TempExtractPath" -Recurse -Force
 
 # Update PATH with Flyway CLI Path
