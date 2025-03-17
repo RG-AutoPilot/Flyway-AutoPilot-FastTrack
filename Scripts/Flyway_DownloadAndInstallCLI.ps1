@@ -1,3 +1,15 @@
+# ===========================
+# Script Name: Flyway_DownloadAndInstallCLI.ps1
+# Version: 1.0.0
+# Author: Chris Hawkins (Redgate Software Ltd)
+# Last Updated: 2025-03-17
+# Description: Automated Flyway CLI Installation Script
+# ===========================
+
+$ScriptVersion = "1.0.0"
+
+Write-Host "Running Flyway Installer Script - Version $ScriptVersion"
+
 $ErrorActionPreference = "Stop"
 
 # Flyway Version to Use (Check for latest version: https://documentation.red-gate.com/flyway/reference/usage/command-line)
@@ -29,9 +41,9 @@ if (-not [string]::IsNullOrWhiteSpace($env:FLYWAY_PATH_LOCATION)) {
     Write-Output "Using Environment Variables for Flyway CLI PATH Location"
     $flywayPathLocation = "${env:FLYWAY_PATH_LOCATION}"
     } else {
-    Write-Output "Using Local Variables for Flyway CLI PATH Location"
     # Local Variables - If Env Variables Not Set - PATH Location (Defaulting to User)
     $flywayPathLocation = 'Machine'
+        Write-Output "Using Local Variable '$flywayPathLocation' for Flyway CLI PATH Location"
 }
 
 # Refresh PATH values for current session
@@ -77,9 +89,10 @@ if (Get-Command flyway -ErrorAction SilentlyContinue) {
     $a = & "flyway" --version 2>&1 | Select-String 'Edition'
     $b = $a -split ' '
     $currentVersion = $b[3]
+    Write-Host "$($b) Currently Installed."
     
     if ($currentVersion -eq $flywayVersion) {
-        Write-Output "$($b) is already installed. No Changes Required - Exiting Gracefully."
+        Write-Output "Desired version of '$flywayVersion' already installed. No Changes Required - Exiting Gracefully."
         Exit
     }
 } else {
@@ -184,14 +197,14 @@ function Update-PathVariable {
     $updateSuccess = $false
 
     try {
-        # Attempt to update the preferred PATH
-        [System.Environment]::SetEnvironmentVariable(
-            'Path',
-            "$FlywayInstallDirectory;$([System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::$PreferredTarget))",
-            [System.EnvironmentVariableTarget]::$PreferredTarget
-        )
-        $updateSuccess = $true
-        Write-Host "Flyway CLI added to $PreferredTarget Environment Variable PATH successfully."
+        $currentPath = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::$PreferredTarget)
+        if ($null -ne $currentPath) {
+            [System.Environment]::SetEnvironmentVariable('Path', "$FlywayInstallDirectory;$currentPath", [System.EnvironmentVariableTarget]::$PreferredTarget)
+            $updateSuccess = $true
+            Write-Host "Flyway CLI added to $PreferredTarget Environment Variable PATH successfully."
+        } else {
+            Write-Warning "Unable to retrieve $PreferredTarget PATH. Skipping update."
+        }
     } catch {
         Write-Warning "Failed to update $PreferredTarget PATH. Error: $_"
         Write-Warning "Elevate Agent/Runner to local admin to set Machine PATH if required"
