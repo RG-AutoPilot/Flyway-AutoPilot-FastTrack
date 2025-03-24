@@ -13,3 +13,4 @@ ALTER TABLE [Customers].[Customer] ADD PRIMARY KEY CLUSTERED ([CustomerID])
 GO
 ALTER TABLE [Customers].[Customer] ADD UNIQUE NONCLUSTERED ([Email])
 GO
+
