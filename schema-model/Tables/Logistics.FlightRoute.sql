@@ -1,4 +1,4 @@
-CREATE TABLE [Inventory].[FlightRoute]
+CREATE TABLE [Logistics].[FlightRoute]
 (
 [RouteID] [int] NOT NULL IDENTITY(1, 1),
 [DepartureCity] [nvarchar] (50) NOT NULL,
@@ -6,5 +6,5 @@ CREATE TABLE [Inventory].[FlightRoute]
 [Distance] [int] NOT NULL
 )
 GO
-ALTER TABLE [Inventory].[FlightRoute] ADD PRIMARY KEY CLUSTERED ([RouteID])
+ALTER TABLE [Logistics].[FlightRoute] ADD CONSTRAINT [PK__FlightRo__80979AADC83FDFDB] PRIMARY KEY CLUSTERED ([RouteID])
 GO

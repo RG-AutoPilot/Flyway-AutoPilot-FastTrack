@@ -1,4 +1,4 @@
-CREATE TABLE [Inventory].[Flight]
+CREATE TABLE [Logistics].[Flight]
 (
 [FlightID] [int] NOT NULL IDENTITY(1, 1),
 [Airline] [nvarchar] (50) NOT NULL,
@@ -10,5 +10,5 @@ CREATE TABLE [Inventory].[Flight]
 [AvailableSeats] [int] NOT NULL
 )
 GO
-ALTER TABLE [Inventory].[Flight] ADD PRIMARY KEY CLUSTERED ([FlightID])
+ALTER TABLE [Logistics].[Flight] ADD CONSTRAINT [PK__Flight__8A9E148E9A8ED149] PRIMARY KEY CLUSTERED ([FlightID])
 GO

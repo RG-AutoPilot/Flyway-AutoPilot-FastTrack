@@ -2,7 +2,6 @@ id = "97ea357d-2613-4415-b434-775478105625"
 name = "AutoPilot - FastTrack"
 databaseType = "SqlServer"
 
-
 [environments.development]
 url = "jdbc:sqlserver://localhost;databaseName=AutoPilotDev;encrypt=true;integratedSecurity=true;trustServerCertificate=true"
 schemas = [ ]
@@ -39,17 +38,21 @@ validateMigrationNaming = true
 defaultSchema = "dbo"
 baselineOnMigrate = true
 baselineVersion = "001"
-errorOverrides = ["S0001:0:I-"]
-sqlserver.clean.mode = "all"
-sqlserver.clean.schemas.exclude = ["ExampleSchema1", "ExampleSchema2"] 
+errorOverrides = [ "S0001:0:I-" ]
+
+[flyway.sqlserver.clean]
+mode = "all"
+
+  [flyway.sqlserver.clean.schemas]
+  exclude = [ "ExampleSchema1", "ExampleSchema2" ]
 
 [flywayDesktop]
 developmentEnvironment = "development"
 shadowEnvironment = "shadow"
 schemaModel = "./schema-model"
 
-[flywayDesktop.generate]
-undoScripts = true
+  [flywayDesktop.generate]
+  undoScripts = true
 
 [redgateCompare.sqlserver]
 filterFile = "Filter.scpf"
