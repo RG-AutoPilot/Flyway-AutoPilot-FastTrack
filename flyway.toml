@@ -4,12 +4,10 @@ databaseType = "SqlServer"
 
 [environments.development]
 url = "jdbc:sqlserver://localhost;databaseName=AutopilotDev;encrypt=true;integratedSecurity=true;trustServerCertificate=true"
-schemas = [ "dbo", "Customers", "Logistics", "Operation", "Sales"]
 displayName = "Development database"
 
 [environments.shadow]
 url = "jdbc:sqlserver://localhost;databaseName=AutopilotShadow;encrypt=true;integratedSecurity=true;trustServerCertificate=true"
-schemas = [ "dbo", "Customers", "Logistics", "Operation", "Sales"]
 displayName = "Shadow database"
 provisioner = "clean"
 
@@ -25,13 +23,11 @@ displayName = "Test database"
 
 [environments.Check]
 url = "jdbc:sqlserver://localhost;databaseName=AutopilotCheck;encrypt=true;integratedSecurity=true;trustServerCertificate=true"
-schemas = [ "dbo", "Customers", "Logistics", "Operation", "Sales"]
 displayName = "Check (Reporting) database"
 provisioner = "clean"
 
 [environments.Build]
 url = "jdbc:sqlserver://localhost;databaseName=AutopilotBuild;encrypt=true;integratedSecurity=true;trustServerCertificate=true"
-schemas = [ "dbo", "Customers", "Logistics", "Operation", "Sales"]
 displayName = "Build database"
 provisioner = "clean"
 
