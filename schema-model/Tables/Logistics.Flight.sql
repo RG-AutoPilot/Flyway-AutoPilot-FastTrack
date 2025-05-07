@@ -7,6 +7,8 @@ CREATE TABLE [Logistics].[Flight]
 [DepartureTime] [datetime] NOT NULL,
 [ArrivalTime] [datetime] NOT NULL,
 [Price] [decimal] (10, 2) NOT NULL,
+
+  
 [AvailableSeats] [int] NOT NULL
 )
 GO
