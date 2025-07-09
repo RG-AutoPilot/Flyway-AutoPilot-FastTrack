@@ -77,10 +77,12 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
-      # Optional - If Enabled, Flyway CLI will be validated and installed if not present
-      - name: Flyway - CLI Automatic Validation and Install
-        run: bash ${{ GITHUB.WORKSPACE }}/Scripts/Flyway_DownloadAndInstallCLI_Unix.sh
-        if: env.FLYWAY_CLI_INSTALL_CHECK == 'true'
+      - uses: red-gate/setup-flyway@v1.0.3
+        with:
+            version: '10.12.0'
+            architecture: 'x64'
+            platform: 'linux'
+            edition: 'community'        
       # Step 1 - Flyway License Authentication #
       - name: Flyway Authentication
         if: ${{ env.EXECUTE_BUILD == 'true' && env.FLYWAY_AUTH_DISABLED != 'true' && success() }}
