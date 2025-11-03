@@ -1,10 +1,10 @@
 **RUN THE SQL SCRIPT FIRST TO CREATE THE NEEDED QUEST ITEMS**
 
-# Operations Quest 7: Unique Constraints and Data Integrity
+# Developer Quest 12: Unique Constraints and Data Integrity
 
-**Difficulty:** ⭐⭐⭐ Intermediate  
+**Difficulty:** Intermediate  
 **Time:** 25-30 minutes  
-**Prerequisites:** Completed Operations Quest 6
+**Prerequisites:** Completed Developer Quest 11
 
 ## Learning Objectives
 By completing this quest, you will learn:

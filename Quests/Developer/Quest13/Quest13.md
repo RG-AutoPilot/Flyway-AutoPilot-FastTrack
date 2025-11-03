@@ -1,10 +1,10 @@
 **RUN THE SQL SCRIPT FIRST TO CREATE THE NEEDED QUEST ITEMS**
 
-# Validation Quest 1: Check Constraints and Data Validation
+# Developer Quest 13: Check Constraints and Data Validation
 
-**Difficulty:** ⭐⭐⭐⭐ Advanced  
+**Difficulty:** Advanced  
 **Time:** 30-40 minutes  
-**Prerequisites:** Completed all Operations quests
+**Prerequisites:** Completed Developer Quest 12
 
 ## Learning Objectives
 By completing this quest, you will learn:

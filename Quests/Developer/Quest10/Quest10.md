@@ -1,10 +1,10 @@
 **RUN THE SQL SCRIPT FIRST TO CREATE THE NEEDED QUEST ITEMS**
 
-# Operations Quest 5: Computed Columns and Performance Indexes
+# Developer Quest 10: Computed Columns and Performance Indexes
 
-**Difficulty:** ⭐⭐⭐ Intermediate-Advanced  
+**Difficulty:** Intermediate-Advanced  
 **Time:** 30-40 minutes  
-**Prerequisites:** Completed Operations Quest 4
+**Prerequisites:** Completed Developer Quest 9
 
 ## Learning Objectives
 By completing this quest, you will learn:

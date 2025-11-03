@@ -2,7 +2,7 @@
 
 # Developer Quest 2: Modifying Existing Tables
 
-**Difficulty:** ⭐ Beginner  
+**Difficulty:** Beginner  
 **Time:** 15-20 minutes  
 **Prerequisites:** Completed Developer Quest 1
 

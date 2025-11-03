@@ -2,7 +2,7 @@
 
 # Developer Quest 1: Your First Migration
 
-**Difficulty:** ⭐ Beginner  
+**Difficulty:** Beginner  
 **Time:** 15-20 minutes  
 **Prerequisites:** Flyway Desktop installed, sample database connected
 

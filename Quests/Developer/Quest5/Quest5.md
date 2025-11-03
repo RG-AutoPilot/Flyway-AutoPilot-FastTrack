@@ -2,7 +2,7 @@
 
 # Developer Quest 5: Managing Static Data
 
-**Difficulty:** ⭐⭐ Intermediate  
+**Difficulty:** Intermediate  
 **Time:** 25-30 minutes  
 **Prerequisites:** Completed Developer Quest 4, Flyway Desktop installed
 

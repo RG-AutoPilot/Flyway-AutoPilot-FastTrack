@@ -1,10 +1,10 @@
 **RUN THE SQL SCRIPT FIRST TO CREATE THE NEEDED QUEST ITEMS**
 
-# Operations Quest 3: Merging Pending Changes
+# Developer Quest 8: Merging Pending Changes
 
-**Difficulty:** ⭐⭐⭐ Intermediate  
+**Difficulty:** Intermediate  
 **Time:** 30-40 minutes  
-**Prerequisites:** Completed Operations Quest 2, familiar with Git branching
+**Prerequisites:** Completed Developer Quest 7
 
 ## Learning Objectives
 By completing this quest, you will learn:

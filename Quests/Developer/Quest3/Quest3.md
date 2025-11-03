@@ -2,7 +2,7 @@
 
 # Developer Quest 3: Working with Database Views
 
-**Difficulty:** ⭐⭐ Beginner  
+**Difficulty:** Beginner  
 **Time:** 20-25 minutes  
 **Prerequisites:** Completed Developer Quest 2
 

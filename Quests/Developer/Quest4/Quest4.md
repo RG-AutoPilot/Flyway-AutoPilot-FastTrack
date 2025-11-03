@@ -2,7 +2,7 @@
 
 # Developer Quest 4: Fixing Broken Dependencies
 
-**Difficulty:** ⭐⭐ Beginner-Intermediate  
+**Difficulty:** Beginner-Intermediate  
 **Time:** 20-30 minutes  
 **Prerequisites:** Completed Developer Quest 3
 

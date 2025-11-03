@@ -1,116 +1,139 @@
 # Flyway AutoPilot FastTrack - Quest Guide
 
-Welcome to the Flyway AutoPilot FastTrack quest system! This comprehensive learning path takes you from **Flyway beginner to expert** through hands-on, practical exercises.
+Welcome to the Flyway AutoPilot FastTrack quest system! This comprehensive learning program helps you master Flyway through hands-on, practical exercises organized by role and focus area.
 
-## 🎯 Learning Path Overview
+## 🎯 Quest Organization
 
-The quests are organized into three progressive levels:
+The quests are organized into **three categories** based on different aspects of Flyway usage:
 
-### 🌱 Beginner: Developer Quests (1-5)
-**Time:** ~2 hours total  
-**Focus:** Flyway fundamentals and basic database operations
+### 👨‍💻 Developer Quests
+**Focus:** Using Flyway Desktop to create and manage database objects and schema changes  
+**Tools:** Flyway Desktop, SQL Server Management Studio / Azure Data Studio  
+**Skills:** Creating migrations, modifying schemas, managing database objects
 
-### ⚙️ Intermediate: Operations Quests (1-7)
-**Time:** ~4 hours total  
-**Focus:** Advanced schema management and performance optimization
+### 🔧 Operations Quests
+**Focus:** Audits, reports, approvals, pipelines, and deployment validation  
+**Tools:** Azure DevOps, Flyway CLI, Flyway Check  
+**Skills:** CI/CD pipelines, deployment validation, drift detection, approvals
 
-### 🎓 Advanced: Validation Quests (1-4)
-**Time:** ~3 hours total  
-**Focus:** Production deployment, automation, and enterprise patterns
+### 📦 Other Quests
+**Focus:** Advanced automation and specialized Flyway features  
+**Tools:** Various Flyway features  
+**Skills:** Callbacks, advanced automation
 
 ---
 
 ## 📚 Quest Catalog
 
-### Developer Quests (Beginner)
+### 👨‍💻 Developer Quests
 
-#### Quest 1: Your First Migration ⭐
-**Time:** 15-20 minutes  
+These quests focus on using Flyway Desktop to create database objects and manage schema changes. Perfect for developers who need to version control their database work.
+
+#### Quest 1: Your First Migration
+**Time:** 15-20 minutes | **Difficulty:** Beginner  
 **Learn:** Create your first Flyway migration, understand versioned migrations, and learn the basic workflow.  
 **Skills:** CREATE TABLE, migration generation, schema history tracking
 
-#### Quest 2: Modifying Existing Tables ⭐
-**Time:** 15-20 minutes  
+#### Quest 2: Modifying Existing Tables
+**Time:** 15-20 minutes | **Difficulty:** Beginner  
 **Learn:** Safely modify existing database schemas and manage schema evolution.  
 **Skills:** ALTER TABLE, backward compatibility, nullable columns
 
-#### Quest 3: Working with Database Views ⭐⭐
-**Time:** 20-25 minutes  
+#### Quest 3: Working with Database Views
+**Time:** 20-25 minutes | **Difficulty:** Beginner  
 **Learn:** Create and modify views, understand repeatable vs versioned migrations.  
 **Skills:** CREATE VIEW, ALTER VIEW, repeatable migrations (R__)
 
-#### Quest 4: Fixing Broken Dependencies ⭐⭐
-**Time:** 20-30 minutes  
+#### Quest 4: Fixing Broken Dependencies
+**Time:** 20-30 minutes | **Difficulty:** Beginner-Intermediate  
 **Learn:** Identify and fix broken database object dependencies.  
 **Skills:** Object dependencies, stored procedures, system catalog queries
 
-#### Quest 5: Managing Static Data ⭐⭐
-**Time:** 25-30 minutes  
+#### Quest 5: Managing Static Data
+**Time:** 25-30 minutes | **Difficulty:** Intermediate  
 **Learn:** Version control reference data and manage static data deployments.  
 **Skills:** Static data tracking, skipExecutingMigrations, idempotent scripts
 
----
-
-### Operations Quests (Intermediate)
-
-#### Quest 1: Schema Normalization ⭐⭐⭐
-**Time:** 35-45 minutes  
+#### Quest 6: Schema Normalization
+**Time:** 35-45 minutes | **Difficulty:** Intermediate  
 **Learn:** Normalize database schemas and safely refactor existing tables.  
 **Skills:** Database normalization, foreign keys, data migration, multi-step migrations
 
-#### Quest 2: Large Table Refactoring ⭐⭐⭐
-**Time:** 30-40 minutes  
+#### Quest 7: Large Table Refactoring
+**Time:** 30-40 minutes | **Difficulty:** Intermediate  
 **Learn:** Split large tables for better performance and manageability.  
 **Skills:** Vertical partitioning, 1:1 relationships, performance optimization
 
-#### Quest 3: Merging Pending Changes ⭐⭐⭐
-**Time:** 30-40 minutes  
+#### Quest 8: Merging Pending Changes
+**Time:** 30-40 minutes | **Difficulty:** Intermediate  
 **Learn:** Manage concurrent development and selectively deploy schema changes.  
 **Skills:** Selective migration, schema filtering, concurrent development
 
-#### Quest 4: Table Partitioning ⭐⭐⭐
-**Time:** 35-45 minutes  
+#### Quest 9: Table Partitioning
+**Time:** 35-45 minutes | **Difficulty:** Intermediate-Advanced  
 **Learn:** Implement table partitioning for large datasets.  
 **Skills:** Partition functions, partition schemes, performance tuning
 
-#### Quest 5: Computed Columns and Indexes ⭐⭐⭐
-**Time:** 30-40 minutes  
+#### Quest 10: Computed Columns and Indexes
+**Time:** 30-40 minutes | **Difficulty:** Intermediate-Advanced  
 **Learn:** Add computed columns and optimize queries with indexes.  
 **Skills:** Computed columns (PERSISTED), covering indexes, query optimization
 
-#### Quest 6: Cascading Deletes ⭐⭐⭐
-**Time:** 25-35 minutes  
+#### Quest 11: Cascading Deletes
+**Time:** 25-35 minutes | **Difficulty:** Intermediate  
 **Learn:** Manage referential integrity with cascading operations.  
 **Skills:** Foreign key constraints, CASCADE, SET NULL, referential integrity
 
-#### Quest 7: Unique Constraints ⭐⭐⭐
-**Time:** 25-30 minutes  
+#### Quest 12: Unique Constraints
+**Time:** 25-30 minutes | **Difficulty:** Intermediate  
 **Learn:** Enforce uniqueness and prevent duplicate data.  
 **Skills:** Unique constraints, multi-column uniqueness, data validation
 
----
-
-### Validation Quests (Advanced)
-
-#### Quest 1: Check Constraints ⭐⭐⭐⭐
-**Time:** 30-40 minutes  
+#### Quest 13: Check Constraints
+**Time:** 30-40 minutes | **Difficulty:** Advanced  
 **Learn:** Implement complex data validation rules at the database level.  
 **Skills:** CHECK constraints, data validation, business rule enforcement
 
-#### Quest 2: Production Deployment Validation ⭐⭐⭐⭐
-**Time:** 35-45 minutes  
-**Learn:** Use Flyway Check reports to validate deployments before production.  
-**Skills:** Flyway Check, drift detection, Changes reports, CI/CD validation
+#### Quest 14: Complex Stored Procedures
+**Time:** 45-60 minutes | **Difficulty:** Advanced  
+**Learn:** Create enterprise-grade stored procedures and functions.  
+**Skills:** Stored procedures, error handling, transactions, scalar/table-valued functions
 
-#### Quest 3: Flyway Callbacks ⭐⭐⭐⭐⭐
-**Time:** 40-50 minutes  
+---
+
+### 🔧 Operations Quests
+
+These quests focus on the operational aspects of Flyway: pipelines, reports, audits, and deployment validation. Essential for DBAs and DevOps engineers.
+
+#### Quest 1: Production Deployment Validation
+**Time:** 35-45 minutes | **Difficulty:** Intermediate  
+**Learn:** Use Flyway Check reports to validate deployments before production.  
+**Skills:** Flyway Check, drift detection, Changes reports, CI/CD validation, pipeline management
+
+**Key Topics:**
+- Triggering Flyway pipelines in Azure DevOps
+- Reading and interpreting Check reports
+- Detecting schema drift
+- Making go/no-go deployment decisions
+- Reviewing changes before they're deployed
+- Understanding code analysis reports
+
+---
+
+### 📦 Other Quests
+
+These quests cover advanced Flyway features and automation that don't fit neatly into developer or operations categories.
+
+#### Quest 1: Flyway Callbacks
+**Time:** 40-50 minutes | **Difficulty:** Advanced  
 **Learn:** Automate operations with Flyway's callback lifecycle.  
 **Skills:** Callback events, afterClean, beforeMigrate, automation
 
-#### Quest 4: Complex Stored Procedures ⭐⭐⭐⭐⭐
-**Time:** 45-60 minutes  
-**Learn:** Create enterprise-grade stored procedures and functions.  
-**Skills:** Stored procedures, error handling, transactions, scalar/table-valued functions
+**Key Topics:**
+- Understanding callback lifecycle events
+- Creating afterClean callbacks
+- Automating pre/post migration tasks
+- Implementing validation checks
 
 ---
 
@@ -119,83 +142,40 @@ The quests are organized into three progressive levels:
 ### Prerequisites
 - **Flyway Desktop** installed and configured
 - **Sample database** set up (see main README)
-- **Azure DevOps** access (for validation quests)
+- **Azure DevOps** access (for Operations quests)
 - **SQL Server Management Studio** or Azure Data Studio
 
 ### Recommended Approach
 
-1. **Start with Developer Quests**: Build foundational Flyway knowledge
-2. **Progress to Operations Quests**: Learn advanced schema management
-3. **Complete Validation Quests**: Master production deployment and automation
-4. **Practice with Real Scenarios**: Apply skills to your own projects
+**For Developers:**
+1. Start with Developer Quest 1 and work through sequentially
+2. Focus on learning Flyway Desktop workflows
+3. Practice creating and managing migrations
+4. Apply skills to your own projects
+
+**For Operations/DBAs:**
+1. Review Developer Quests 1-5 for Flyway basics
+2. Focus on Operations Quest 1 for pipeline and deployment validation
+3. Explore Other Quest 1 for advanced automation
+4. Integrate learnings into your CI/CD pipelines
+
+**For Full-Stack Teams:**
+1. Developers complete Developer quests
+2. DevOps/DBAs complete Operations quests
+3. Share knowledge across the team
+4. Collaborate on CI/CD pipeline design
 
 ### Before Each Quest
 
 1. Read the quest objectives and scenario
-2. Run the provided SQL script to set up test data
+2. Run the provided SQL script to set up test data (if applicable)
 3. Follow the steps carefully
 4. Test your solutions thoroughly
 5. Review the success criteria
 
 ---
 
-## 📊 Skill Progression Matrix
-
-| Quest Level | Skills Acquired | Confidence Level |
-|-------------|----------------|------------------|
-| **Developer 1-2** | Basic migrations, schema changes | Beginner |
-| **Developer 3-5** | Views, dependencies, static data | Comfortable Beginner |
-| **Operations 1-3** | Normalization, refactoring, concurrent dev | Intermediate |
-| **Operations 4-7** | Partitioning, performance, constraints | Advanced Intermediate |
-| **Validation 1-2** | Validation, production deployment | Advanced |
-| **Validation 3-4** | Automation, enterprise patterns | Expert |
-
----
-
-## 🎯 Learning Objectives by Category
-
-### Developer Quests Focus
-- ✅ Understanding Flyway basics
-- ✅ Creating and modifying migrations
-- ✅ Working with different object types
-- ✅ Managing dependencies
-- ✅ Version controlling data
-
-### Operations Quests Focus
-- ✅ Advanced schema design
-- ✅ Performance optimization
-- ✅ Concurrent development workflows
-- ✅ Large-scale refactoring
-- ✅ Data integrity patterns
-
-### Validation Quests Focus
-- ✅ Production deployment safety
-- ✅ CI/CD integration
-- ✅ Advanced automation
-- ✅ Enterprise patterns
-- ✅ Complex business logic
-
----
-
-## 💡 Tips for Success
-
-### Do's ✅
-- Complete quests in order - they build on each other
-- Test thoroughly before moving to the next quest
-- Read the "Key Concepts Learned" sections
-- Try the advanced challenges (optional)
-- Document your learnings
-
-### Don'ts ❌
-- Don't skip the setup scripts
-- Don't rush through without understanding
-- Don't skip testing your solutions
-- Don't ignore the troubleshooting sections
-- Don't skip the hints - they're valuable!
-
----
-
-## 🔧 Quest Structure
+## 📊 Quest Structure
 
 Each quest follows a consistent structure:
 
@@ -211,8 +191,27 @@ Each quest follows a consistent structure:
 10. **Success Criteria**: How to validate completion
 11. **Troubleshooting**: Common issues and solutions
 12. **Real-World Applications**: Where to use these skills
-13. **Advanced Challenge**: Optional extensions
+13. **Advanced Challenge**: Optional extensions (where applicable)
 14. **Next Steps**: What's next
+
+---
+
+## 💡 Tips for Success
+
+### Do's ✅
+- Complete quests in order within each category
+- Test thoroughly before moving to the next quest
+- Read the "Key Concepts Learned" sections
+- Try the advanced challenges when available
+- Document your learnings
+- Ask questions when stuck
+
+### Don'ts ❌
+- Don't skip the setup scripts
+- Don't rush through without understanding
+- Don't skip testing your solutions
+- Don't ignore the troubleshooting sections
+- Don't skip the hints - they're valuable!
 
 ---
 
@@ -220,40 +219,58 @@ Each quest follows a consistent structure:
 
 Create a checklist to track your journey:
 
-### Developer (Beginner)
+### 👨‍💻 Developer Quests
 - [ ] Quest 1: Your First Migration
 - [ ] Quest 2: Modifying Existing Tables
 - [ ] Quest 3: Working with Database Views
 - [ ] Quest 4: Fixing Broken Dependencies
 - [ ] Quest 5: Managing Static Data
+- [ ] Quest 6: Schema Normalization
+- [ ] Quest 7: Large Table Refactoring
+- [ ] Quest 8: Merging Pending Changes
+- [ ] Quest 9: Table Partitioning
+- [ ] Quest 10: Computed Columns and Indexes
+- [ ] Quest 11: Cascading Deletes
+- [ ] Quest 12: Unique Constraints
+- [ ] Quest 13: Check Constraints
+- [ ] Quest 14: Complex Stored Procedures
 
-### Operations (Intermediate)
-- [ ] Quest 1: Schema Normalization
-- [ ] Quest 2: Large Table Refactoring
-- [ ] Quest 3: Merging Pending Changes
-- [ ] Quest 4: Table Partitioning
-- [ ] Quest 5: Computed Columns and Indexes
-- [ ] Quest 6: Cascading Deletes
-- [ ] Quest 7: Unique Constraints
+### 🔧 Operations Quests
+- [ ] Quest 1: Production Deployment Validation
 
-### Validation (Advanced)
-- [ ] Quest 1: Check Constraints
-- [ ] Quest 2: Production Deployment Validation
-- [ ] Quest 3: Flyway Callbacks
-- [ ] Quest 4: Complex Stored Procedures
+### 📦 Other Quests
+- [ ] Quest 1: Flyway Callbacks
 
 ---
 
-## 🏆 Certification Path
+## 🎓 Skills by Category
 
-Complete all quests to earn your expertise in:
+### Developer Skills
+After completing Developer quests, you'll be able to:
+- ✅ Create and manage Flyway migrations
+- ✅ Modify database schemas safely
+- ✅ Work with views, procedures, and functions
+- ✅ Manage object dependencies
+- ✅ Version control static/reference data
+- ✅ Normalize and refactor schemas
+- ✅ Optimize database performance
+- ✅ Implement data integrity constraints
 
-- ✅ **Flyway Migration Management**
-- ✅ **Database Schema Design**
-- ✅ **Performance Optimization**
-- ✅ **Production Deployment**
-- ✅ **CI/CD Integration**
-- ✅ **Enterprise Database Development**
+### Operations Skills
+After completing Operations quests, you'll be able to:
+- ✅ Set up and manage Flyway pipelines
+- ✅ Generate and interpret Check reports
+- ✅ Detect and handle schema drift
+- ✅ Validate deployments before production
+- ✅ Make informed go/no-go decisions
+- ✅ Integrate Flyway into CI/CD workflows
+
+### Advanced Skills
+After completing Other quests, you'll be able to:
+- ✅ Implement Flyway callbacks
+- ✅ Automate pre/post migration tasks
+- ✅ Create custom validation checks
+- ✅ Extend Flyway functionality
 
 ---
 
@@ -269,27 +286,6 @@ If you get stuck:
 
 ---
 
-## 🎓 After Completing All Quests
-
-Congratulations! You're now a **Flyway Expert**! 🎉
-
-### Next Steps:
-1. Apply these skills to your own projects
-2. Explore Flyway Enterprise features
-3. Mentor others learning Flyway
-4. Contribute improvements to this repository
-5. Share your success story!
-
-### Advanced Topics to Explore:
-- Flyway Teams/Enterprise features
-- Advanced CI/CD patterns
-- Database testing strategies
-- Schema comparison tools
-- Multi-database support
-- Cloud deployment patterns
-
----
-
 ## 📞 Feedback
 
 Have suggestions for improving the quests? Found an issue?
@@ -301,4 +297,4 @@ Have suggestions for improving the quests? Found an issue?
 
 **Happy Learning!** 🚀
 
-*Remember: Database development is a journey, not a destination. These quests are your roadmap to mastery!*
+*Remember: Mastering Flyway takes practice. These quests provide the foundation - your real-world experience will build expertise!*

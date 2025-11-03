@@ -1,10 +1,10 @@
 **RUN THE SQL SCRIPT FIRST TO CREATE THE NEEDED QUEST ITEMS**
 
-# Operations Quest 4: Performance Optimization with Indexes
+# Developer Quest 9: Performance Optimization with Indexes
 
-**Difficulty:** ⭐⭐⭐ Intermediate-Advanced  
+**Difficulty:** Intermediate-Advanced  
 **Time:** 35-45 minutes  
-**Prerequisites:** Completed Operations Quest 3
+**Prerequisites:** Completed Developer Quest 8
 
 ## Learning Objectives
 By completing this quest, you will learn:

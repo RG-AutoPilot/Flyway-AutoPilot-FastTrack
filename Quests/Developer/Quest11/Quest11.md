@@ -1,10 +1,10 @@
 **RUN THE SQL SCRIPT FIRST TO CREATE THE NEEDED QUEST ITEMS**
 
-# Operations Quest 6: Cascading Deletes and Referential Integrity
+# Developer Quest 11: Cascading Deletes and Referential Integrity
 
-**Difficulty:** ⭐⭐⭐ Intermediate  
+**Difficulty:** Intermediate  
 **Time:** 25-35 minutes  
-**Prerequisites:** Completed Operations Quest 5
+**Prerequisites:** Completed Developer Quest 10
 
 ## Learning Objectives
 By completing this quest, you will learn:

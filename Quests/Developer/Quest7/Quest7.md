@@ -1,10 +1,10 @@
 **RUN THE SQL SCRIPT FIRST TO CREATE THE NEEDED QUEST ITEMS**
 
-# Operations Quest 2: Large Table Refactoring
+# Developer Quest 7: Large Table Refactoring
 
-**Difficulty:** ⭐⭐⭐ Intermediate  
+**Difficulty:** Intermediate  
 **Time:** 30-40 minutes  
-**Prerequisites:** Completed Operations Quest 1
+**Prerequisites:** Completed Developer Quest 6
 
 ## Learning Objectives
 By completing this quest, you will learn:

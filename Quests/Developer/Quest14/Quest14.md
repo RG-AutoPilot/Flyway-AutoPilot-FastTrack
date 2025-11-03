@@ -1,10 +1,10 @@
 **RUN THE SQL SCRIPT FIRST TO CREATE THE NEEDED QUEST ITEMS (if applicable)**
 
-# Validation Quest 4: Complex Stored Procedures and Functions
+# Developer Quest 14: Complex Stored Procedures and Functions
 
-**Difficulty:** ⭐⭐⭐⭐⭐ Expert  
+**Difficulty:** Advanced  
 **Time:** 45-60 minutes  
-**Prerequisites:** Completed all previous quests
+**Prerequisites:** Completed Developer Quest 13
 
 ## Learning Objectives
 By completing this quest, you will learn:

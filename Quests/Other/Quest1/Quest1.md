@@ -1,10 +1,10 @@
 **WE HAVE PROVIDED THE NEEDED SQL FOR THE CALLBACK SCRIPT**
 
-# Validation Quest 3: Flyway Callbacks for Advanced Automation
+# Other Quest 1: Flyway Callbacks for Advanced Automation
 
-**Difficulty:** ⭐⭐⭐⭐⭐ Advanced-Expert  
+**Difficulty:** Advanced  
 **Time:** 40-50 minutes  
-**Prerequisites:** Completed Validation Quest 2
+**Prerequisites:** Completed Developer quests
 
 ## Learning Objectives
 By completing this quest, you will learn:
