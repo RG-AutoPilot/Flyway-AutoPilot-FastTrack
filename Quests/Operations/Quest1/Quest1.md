@@ -1,8 +1,8 @@
 **RUN THE SQL SCRIPT FIRST TO CREATE THE NEEDED QUEST ITEMS**
 
-# Operations Quest 1: Schema Normalization
+# Operations Quest 1: Production Deployment Validation with Flyway Check
 
-**Difficulty:** ⭐⭐⭐ Intermediate  
+**Difficulty:** Intermediate  
 **Time:** 35-45 minutes  
 **Prerequisites:** Completed all Developer quests
 
