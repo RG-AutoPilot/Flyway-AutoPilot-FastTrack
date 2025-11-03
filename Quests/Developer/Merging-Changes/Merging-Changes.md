@@ -1,10 +1,10 @@
 **RUN THE SQL SCRIPT FIRST TO CREATE THE NEEDED QUEST ITEMS**
 
-# Developer Quest 8: Merging Pending Changes
+# Developer Quest - Merging Pending Changes
 
 **Difficulty:** Intermediate  
 **Time:** 30-40 minutes  
-**Prerequisites:** Completed Developer Quest 7
+**Prerequisites:** Flyway Desktop, Git branching knowledge
 
 ## Learning Objectives
 By completing this quest, you will learn:
@@ -299,4 +299,4 @@ After completing this quest, try:
 3. Filter by object type (only tables, only procedures)
 
 ## Next Steps
-Great work on managing concurrent changes! Move on to **Operations Quest 4** to learn about performance optimization with indexes and computed columns!
+Great work on managing concurrent changes! Explore other Operations quests to learn about performance optimization with indexes and computed columns!

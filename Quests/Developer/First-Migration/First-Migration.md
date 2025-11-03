@@ -1,10 +1,10 @@
 **RUN THE SQL SCRIPT FIRST TO CREATE THE NEEDED QUEST ITEMS**
 
-# Developer Quest 1: Your First Migration
+# Developer Quest - Your First Migration
 
 **Difficulty:** Beginner  
 **Time:** 15-20 minutes  
-**Prerequisites:** Flyway Desktop installed, sample database connected
+**Prerequisites:** None - Flyway Desktop installed, sample database connected
 
 ## Learning Objectives
 By completing this quest, you will learn:
@@ -91,4 +91,4 @@ Create a new table called `Sales.Campaigns` that will store information about ma
 - **Migration not detected**: Refresh Flyway Desktop's schema comparison
 
 ## Next Steps
-Once you've completed this quest, move on to **Developer Quest 2** to learn how to modify existing tables!
+Once you've completed this quest, explore other Developer quests to learn how to modify existing tables!

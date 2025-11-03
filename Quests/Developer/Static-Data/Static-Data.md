@@ -1,10 +1,10 @@
 **RUN THE SQL SCRIPT FIRST TO CREATE THE NEEDED QUEST ITEMS**
 
-# Developer Quest 5: Managing Static Data
+# Developer Quest - Managing Static Data
 
 **Difficulty:** Intermediate  
 **Time:** 25-30 minutes  
-**Prerequisites:** Completed Developer Quest 4, Flyway Desktop installed
+**Prerequisites:** Flyway Desktop installed, basic understanding of migrations
 
 ## Learning Objectives
 By completing this quest, you will learn:

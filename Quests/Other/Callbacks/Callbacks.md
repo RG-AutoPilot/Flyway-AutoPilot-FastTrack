@@ -1,10 +1,10 @@
 **WE HAVE PROVIDED THE NEEDED SQL FOR THE CALLBACK SCRIPT**
 
-# Other Quest 1: Flyway Callbacks for Advanced Automation
+# Other Quest - Flyway Callbacks for Advanced Automation
 
 **Difficulty:** Advanced  
 **Time:** 40-50 minutes  
-**Prerequisites:** Completed Developer quests
+**Prerequisites:** Understanding of Flyway lifecycle, basic scripting
 
 ## Learning Objectives
 By completing this quest, you will learn:
@@ -456,4 +456,4 @@ PRINT 'beforeEachMigrate: Migration logged';
 5. Implement drift detection in a callback (compare schema to expected state)
 
 ## Next Steps
-Fantastic work on callbacks! Move on to **Validation Quest 4** to learn about creating complex stored procedures and functions!
+Fantastic work on callbacks! Explore other quests to learn about creating complex stored procedures and functions!

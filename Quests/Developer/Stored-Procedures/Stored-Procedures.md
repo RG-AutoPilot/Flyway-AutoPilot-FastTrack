@@ -1,10 +1,10 @@
 **RUN THE SQL SCRIPT FIRST TO CREATE THE NEEDED QUEST ITEMS (if applicable)**
 
-# Developer Quest 14: Complex Stored Procedures and Functions
+# Developer Quest - Complex Stored Procedures and Functions
 
 **Difficulty:** Advanced  
 **Time:** 45-60 minutes  
-**Prerequisites:** Completed Developer Quest 13
+**Prerequisites:** Flyway Desktop, SQL programming experience
 
 ## Learning Objectives
 By completing this quest, you will learn:

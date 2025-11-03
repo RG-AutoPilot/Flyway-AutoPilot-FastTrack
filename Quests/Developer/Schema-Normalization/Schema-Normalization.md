@@ -1,10 +1,10 @@
 **RUN THE SQL SCRIPT FIRST TO CREATE THE NEEDED QUEST ITEMS**
 
-# Operations Quest 1: Production Deployment Validation with Flyway Check
+# Developer Quest - Schema Normalization
 
 **Difficulty:** Intermediate  
 **Time:** 35-45 minutes  
-**Prerequisites:** Completed all Developer quests
+**Prerequisites:** Understanding of Flyway migrations, SQL DDL
 
 ## Learning Objectives
 By completing this quest, you will learn:
@@ -263,4 +263,4 @@ VALUES (99999, 'Home', '555-9999');  -- Non-existent CustomerID
 3. Create views that replicate the old denormalized structure for backward compatibility
 
 ## Next Steps
-Great work on normalizing the schema! Move on to **Operations Quest 2** to learn about safe data migration strategies!
+Great work on normalizing the schema! Explore other Operations quests to learn about safe data migration strategies!
