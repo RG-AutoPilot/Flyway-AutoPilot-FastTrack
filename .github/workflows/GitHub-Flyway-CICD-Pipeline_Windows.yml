@@ -175,10 +175,19 @@ jobs:
           path: ${{ GITHUB.WORKSPACE }}\reports\${{ env.DATABASE_NAME }}-Run-${{ GITHUB.RUN_ID }}-${{ env.ENVIRONMENT }}-Check-Report.html    
 
       # Step 3 - Deploy pending migrations to target database
-      - name: Migrate Test DB
+      # Step 3 - Deploy pending migrations to target database
+      - name: Deploy to Test DB
         if: success()
-        run: |
-          flyway info migrate info -environment="${{ env.ENVIRONMENT }}" -user="${{ env.TARGET_DATABASE_USERNAME }}" -password="${{ env.TARGET_DATABASE_PASSWORD }}" -baselineOnMigrate="true" -configFiles="${{ GITHUB.WORKSPACE }}\flyway.toml" -locations="filesystem:${{ GITHUB.WORKSPACE }}\migrations" "-publishResult=${{ env.FLYWAY_PUBLISH_RESULT }}" "-flywayServicePublish.publishReport=${{ env.FLYWAY_PUBLISH_RESULT }}" "-reportEnabled=${{ env.FLYWAY_PUBLISH_RESULT }}" ${{ env.CUSTOM_PARAMS }}
+        uses: red-gate/flyway-actions/migrations/deploy@v1
+        with:
+          target-environment: ${{ env.ENVIRONMENT }}
+          target-user: ${{ env.TARGET_DATABASE_USERNAME }}
+          target-password: ${{ env.TARGET_DATABASE_PASSWORD }}
+          extra-args: |
+            "\"-publishResult=${{ env.FLYWAY_PUBLISH_RESULT }}\"
+             \"-flywayServicePublish.publishReport=${{ env.FLYWAY_PUBLISH_RESULT }}\"
+             \"-reportEnabled=${{ env.FLYWAY_PUBLISH_RESULT }}\"
+             ${{ env.CUSTOM_PARAMS }}"
 
   prod:
     name: Deploy Prod
@@ -239,7 +248,15 @@ jobs:
           path: ${{ GITHUB.WORKSPACE }}\reports\${{ env.DATABASE_NAME }}-Run-${{ GITHUB.RUN_ID }}-${{ env.ENVIRONMENT }}-Check-Report.html
 
       # Step 3 - Deploy pending migrations to target database
-      - name: Migrate Production DB
+      - name: Deploy to Production DB
         if: success()
-        run: |
-          flyway info migrate info -environment="${{ env.ENVIRONMENT }}" -user="${{ env.TARGET_DATABASE_USERNAME }}" -password="${{ env.TARGET_DATABASE_PASSWORD }}" -baselineOnMigrate="true" -configFiles="${{ GITHUB.WORKSPACE }}\flyway.toml" -locations="filesystem:${{ GITHUB.WORKSPACE }}\migrations" "-publishResult=${{ env.FLYWAY_PUBLISH_RESULT }}" "-flywayServicePublish.publishReport=${{ env.FLYWAY_PUBLISH_RESULT }}" "-reportEnabled=${{ env.FLYWAY_PUBLISH_RESULT }}" ${{ env.CUSTOM_PARAMS }}
+        uses: red-gate/flyway-actions/migrations/deploy@v1
+        with:
+          target-environment: ${{ env.ENVIRONMENT }}
+          target-user: ${{ env.TARGET_DATABASE_USERNAME }}
+          target-password: ${{ env.TARGET_DATABASE_PASSWORD }}
+          extra-args: |
+            "\"-publishResult=${{ env.FLYWAY_PUBLISH_RESULT }}\"
+             \"-flywayServicePublish.publishReport=${{ env.FLYWAY_PUBLISH_RESULT }}\"
+             \"-reportEnabled=${{ env.FLYWAY_PUBLISH_RESULT }}\"
+             ${{ env.CUSTOM_PARAMS }}"
