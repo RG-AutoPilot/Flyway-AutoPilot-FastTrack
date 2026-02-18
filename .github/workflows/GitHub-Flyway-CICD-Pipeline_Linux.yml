@@ -75,6 +75,8 @@ jobs:
       EXECUTE_BUILD: 'true' # Turn to false to skip the build stage tasks
       publishArtifacts: 'true' # Turn to false to skip the artifact upload
     steps:
+      - name: Echo Environment Variables
+        run: env | sort
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
       # Optional - If Enabled, Flyway CLI will be validated and installed if not present
@@ -139,6 +141,8 @@ jobs:
       FLYWAY_CHECK_DRIFT_ON_MIGRATE: 'true' # Turn to false to skip the Drift Report upload to Flyway Pipelines (If enabled)      
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Echo Environment Variables
+        run: env | sort
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/download-artifact@v4
         with:
@@ -193,6 +197,8 @@ jobs:
       generateReport: 'true' # Turn to false to skip the CHECK report stage tasks
       FLYWAY_CHECK_DRIFT_ON_MIGRATE: 'true' # Turn to false to skip the Drift Report upload to Flyway Pipelines (If enabled)
     steps:
+      - name: Echo Environment Variables
+        run: env | sort
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/download-artifact@v4
         with:
