@@ -183,11 +183,7 @@ jobs:
           target-environment: ${{ env.ENVIRONMENT }}
           target-user: ${{ env.TARGET_DATABASE_USERNAME }}
           target-password: ${{ env.TARGET_DATABASE_PASSWORD }}
-          extra-args: | 
-            "\"-publishResult=${{ env.FLYWAY_PUBLISH_RESULT }}\"
-             \"-flywayServicePublish.publishReport=${{ env.FLYWAY_PUBLISH_RESULT }}\"
-             \"-reportEnabled=${{ env.FLYWAY_PUBLISH_RESULT }}\"
-             ${{ env.CUSTOM_PARAMS }}"
+          extra-args: "\"-publishResult=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-flywayServicePublish.publishReport=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-reportEnabled=${{ env.FLYWAY_PUBLISH_RESULT }}\" ${{ env.CUSTOM_PARAMS }}"
 
   prod:
     name: Deploy Prod
@@ -253,8 +249,4 @@ jobs:
           target-environment: ${{ env.ENVIRONMENT }}
           target-user: ${{ env.TARGET_DATABASE_USERNAME }}
           target-password: ${{ env.TARGET_DATABASE_PASSWORD }}
-          extra-args: |
-            "\"-publishResult=${{ env.FLYWAY_PUBLISH_RESULT }}\"
-             \"-flywayServicePublish.publishReport=${{ env.FLYWAY_PUBLISH_RESULT }}\"
-             \"-reportEnabled=${{ env.FLYWAY_PUBLISH_RESULT }}\"
-             ${{ env.CUSTOM_PARAMS }}"
+          extra-args: "\"-publishResult=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-flywayServicePublish.publishReport=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-reportEnabled=${{ env.FLYWAY_PUBLISH_RESULT }}\" ${{ env.CUSTOM_PARAMS }}"
