@@ -118,7 +118,7 @@ jobs:
         if: ${{ env.publishArtifacts == 'true' && success() }}
         uses: actions/upload-artifact@v4
         with: 
-          name: flyway-build-artifact-${{ github.run_number }}
+          name: flyway-build-artifact
           path: |
               !${{ GITHUB.WORKSPACE }}/flyway-*/**/*
               !${{ GITHUB.WORKSPACE }}/.git/**/*
@@ -152,7 +152,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/download-artifact@v4
         with:
-          name: flyway-build-artifact-${{ github.run_number }}
+          name: flyway-build-artifact
 
       # Optional - List out all build artifact files on disk, helpful for debugging
       - name: Display structure of downloaded files
@@ -171,25 +171,26 @@ jobs:
 
       # Step 1 - Create Check Report
       - name: Create Check Reports
-        run: |
-          flyway check -dryrun -changes -drift -environment="${{ env.ENVIRONMENT }}" -user=${{ env.TARGET_DATABASE_USERNAME }} -password=${{ env.TARGET_DATABASE_PASSWORD }} -configFiles="${{ GITHUB.WORKSPACE }}/flyway.toml" -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" "-check.buildEnvironment=${{ env.REPORT_ENVIRONMENT }}" "-environments.${{ env.REPORT_ENVIRONMENT }}.user=${{ env.REPORT_DATABASE_USERNAME }}" "-environments.${{ env.REPORT_ENVIRONMENT }}.password=${{ env.REPORT_DATABASE_PASSWORD }}" "-reportFilename=${{ GITHUB.WORKSPACE }}/reports/${{ env.DATABASE_NAME }}-Run-${{ GITHUB.RUN_ID }}-${{ env.ENVIRONMENT }}-Check-Report.html" "-publishResult=${{ env.FLYWAY_PUBLISH_RESULT }}" "-flywayServicePublish.publishReport=${{ env.FLYWAY_PUBLISH_RESULT }}" "-reportEnabled=${{ env.FLYWAY_PUBLISH_RESULT }}" ${{ env.CUSTOM_PARAMS }}
+        uses: red-gate/flyway-actions/migrations/checks@v1
+        with:
+          target-environment: ${{ env.ENVIRONMENT }}
+          target-user: ${{ env.TARGET_DATABASE_USERNAME }}
+          target-password: ${{ env.TARGET_DATABASE_PASSWORD }}
+          build-environment: ${{ env.REPORT_ENVIRONMENT }}
+          build-user: ${{ env.REPORT_DATABASE_USERNAME }}
+          build-password: ${{ env.REPORT_DATABASE_PASSWORD }}
+          build-ok-to-erase: true
+          pre-deployment-report-name: "flyway-checks-${{ env.ENVIRONMENT }}.html"
+          extra-args: "\"-publishResult=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-flywayServicePublish.publishReport=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-reportEnabled=${{ env.FLYWAY_PUBLISH_RESULT }}\" ${{ env.CUSTOM_PARAMS }}"
         continue-on-error: true
 
-      # Step 2 - Publish Check Report
-      - name: Publish Check Report as Artifact
-        uses: actions/upload-artifact@v4
-        with: 
-          name: flyway-reports-test
-          path: ${{ GITHUB.WORKSPACE }}/reports/${{ env.DATABASE_NAME }}-Run-${{ GITHUB.RUN_ID }}-${{ env.ENVIRONMENT }}-Check-Report.html    
-
-      # Step 3 - Deploy pending migrations to target database
+      # Step 2 - Deploy pending migrations to target database
       - name: Deploy to Test DB
         uses: red-gate/flyway-actions/migrations/deploy@v1
         with:
           target-environment: ${{ env.ENVIRONMENT }}
           target-user: ${{ env.TARGET_DATABASE_USERNAME }}
           target-password: ${{ env.TARGET_DATABASE_PASSWORD }}
-          target-url: "jdbc:sqlserver://localhost;authentication=sqlPassword;databaseName=AutoPilotTest;encrypt=true;trustServerCertificate=true"
           extra-args: "\"-publishResult=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-flywayServicePublish.publishReport=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-reportEnabled=${{ env.FLYWAY_PUBLISH_RESULT }}\" ${{ env.CUSTOM_PARAMS }}"
 
   prod:
@@ -215,7 +216,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/download-artifact@v4
         with:
-          name: flyway-build-artifact-${{ github.run_number }}
+          name: flyway-build-artifact
 
       # Optional - List out all build artifact files on disk, helpful for debugging
       - name: Display structure of downloaded files
@@ -233,20 +234,20 @@ jobs:
           token: ${{ secrets.FLYWAY_TOKEN }}
           i-agree-to-the-eula: true
 
-      # Step 1 - Create Check Report 
+      # Step 1 - Create Check Report
       - name: Create Check Reports
-        if: ${{ env.generateReport == 'true' && success() }}
-        run: |
-          flyway check -dryrun -changes -drift -environment="${{ env.ENVIRONMENT }}" -user=${{ env.TARGET_DATABASE_USERNAME }} -password=${{ env.TARGET_DATABASE_PASSWORD }} -configFiles="${{ GITHUB.WORKSPACE }}/flyway.toml" -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" "-check.buildEnvironment=${{ env.REPORT_ENVIRONMENT }}" "-environments.${{ env.REPORT_ENVIRONMENT }}.user=${{ env.REPORT_DATABASE_USERNAME }}" "-environments.${{ env.REPORT_ENVIRONMENT }}.password=${{ env.REPORT_DATABASE_PASSWORD }}" "-reportFilename=${{ GITHUB.WORKSPACE }}/reports/${{ env.DATABASE_NAME }}-Run-${{ GITHUB.RUN_ID }}-${{ env.ENVIRONMENT }}-Check-Report.html" "-publishResult=${{ env.FLYWAY_PUBLISH_RESULT }}" "-flywayServicePublish.publishReport=${{ env.FLYWAY_PUBLISH_RESULT }}" "-reportEnabled=${{ env.FLYWAY_PUBLISH_RESULT }}" ${{ env.CUSTOM_PARAMS }}
+        uses: red-gate/flyway-actions/migrations/checks@v1
+        with:
+          target-environment: ${{ env.ENVIRONMENT }}
+          target-user: ${{ env.TARGET_DATABASE_USERNAME }}
+          target-password: ${{ env.TARGET_DATABASE_PASSWORD }}
+          build-environment: ${{ env.REPORT_ENVIRONMENT }}
+          build-user: ${{ env.REPORT_DATABASE_USERNAME }}
+          build-password: ${{ env.REPORT_DATABASE_PASSWORD }}
+          build-ok-to-erase: true
+          pre-deployment-report-name: "flyway-checks-${{ env.ENVIRONMENT }}.html"
+          extra-args: "\"-publishResult=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-flywayServicePublish.publishReport=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-reportEnabled=${{ env.FLYWAY_PUBLISH_RESULT }}\" ${{ env.CUSTOM_PARAMS }}"
         continue-on-error: true
-
-      # Step 2 - Publish Check Report
-      - name: Publish Check Report as Artifact
-        if: ${{ env.generateReport == 'true' && success() }}
-        uses: actions/upload-artifact@v4
-        with: 
-          name: flyway-reports-prod
-          path: ${{ GITHUB.WORKSPACE }}/reports/${{ env.DATABASE_NAME }}-Run-${{ GITHUB.RUN_ID }}-${{ env.ENVIRONMENT }}-Check-Report.html
 
       # Step 3 - Deploy pending migrations to target database
       - name: Deploy to Production DB
