@@ -12,68 +12,50 @@
 name: GitHub-Flyway-AutoPilot-Pipeline-Linux
 
 on:
-  # pull_request:
-  #   branches:
-  #     - release
- 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
   workflow_call:  # This enables the workflow to be called from other workflows
 env:
+  ### Step 1: Authenticate Flyway with Personal Access Tokens (PATs)
+  # Details on how to do generate a PAT can be found here: https://documentation.red-gate.com/flyway/flyway-cli-and-api/tutorials/tutorial-personal-access-tokens
+  # Documentation on all available Authentication methods can be found here: https://documentation.red-gate.com/fd/flyway-licensing-263061944.html
 
-  # Enable this for additional debug logging
-  ACTIONS_RUNNER_DEBUG: false
-
-  ### Step 1: Define Environment Secrets ###
+  ### Step 2: Define Environment Secrets ###
   ### Environment Secrets - Create Environment Secrets ###
   ### Navigate to Settings > Secrets & Variables > Actions
   # FLYWAY_EMAIL: Enter the email address linked to the Redgate Account that created the PAT
-  # FLYWAY_TOKEN: Enter the PAT Value (This should be treated like a password and thus as a secure variable.
-  # FLYWAY_CLI_INSTALL (Optional) - Default is empty (Or false): Set as 'true' to enable a Flyway CLI validate and Install step
+  # FLYWAY_TOKEN: Enter the PAT Value (This should be treated like a password and thus as a secure variable)
   # TARGET_DATABASE_USERNAME: Leave blank if using integratedSecurity (default).
   # TARGET_DATABASE_PASSWORD: Leave blank if using integratedSecurity (default).
   # CUSTOM_PARAMS: Optional - Used for passing custom Flyway Parameters to each Flyway command
   ### End of Environment Variables ###
 
-  # Step 2: Authenticate Flyway with Personal Access Tokens (PATs)
-  # Details on how to do this can be found here: https://documentation.red-gate.com/flyway/flyway-cli-and-api/tutorials/tutorial-personal-access-tokens
-  # Documentation on all available Authentication methods can be found here: https://documentation.red-gate.com/fd/flyway-licensing-263061944.html
+  FLYWAY_CLI_INSTALL_CHECK: true # Setting to false will skip the Flyway CLI check step
+  FLYWAY_VERSION: "latest" # This outlines the version of Flyway CLI that will be downloaded if no Flyway CLI is detected on the target agent (Examples - '11.0.0' for specific version. Or 'Latest' for latest version)
 
-  BASELINE_VERSION: "001" # This should match the version number of your baseline script
   FIRST_UNDO_SCRIPT: "002" # This should match the first undo version in your project
 
-  # Optional - Validate Flyway CLI installation for ephemeral agents
-  FLYWAY_CLI_INSTALL_CHECK: "${{ secrets.FLYWAY_CLI_INSTALL }}" # Setting to false will skip the Flyway CLI check step
-  FLYWAY_VERSION: "latest" # This outlines the version of Flyway CLI that will be downloaded if no Flyway CLI is detected on the target agent (Examples - '11.0.0' for specific version. Or 'Latest' for latest version)
+  ACTIONS_RUNNER_DEBUG: false # Enable this for additional debug logging
 
   # Optional: Side Quest #1 - Setup Flyway Pipeline Integration - https://flyway.red-gate.com/ For More Details
   FLYWAY_PUBLISH_RESULT: "false" # Set this value to true to enable Flyway Pipelines and track your releases centrally!
   FLYWAY_DRIFT_ON_MIGRATE: "true" # Set this value to true to enable Flyway Pipelines drift detection and track your drift centrally!
 
-### DO NOT EDIT BELOW THIS LINE - All variables set in the above section will be consumed by the jobs below and therefore do not require any updates to function ###
-
 jobs:
-  # This workflow contains a single job called "build"
   build:
     name: Deploy Build
-    # The type of runner that the job will run on
     runs-on: "self-hosted" # Options - self-hosted/ubuntu-latest/windows-latest (See here for more details on GitHub hosted runners - https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners)
     environment: 'build'
     env:
-      stage: 'Build'
-      displayName: 'Build'
-      DATABASE_NAME: 'AutoPilotBuild'
       ENVIRONMENT: 'Build' # This variable refers to the environment name present in the Flyway Projects TOML file. 
       TARGET_DATABASE_USERNAME: "${{ secrets.TARGET_DATABASE_USERNAME }}"
       TARGET_DATABASE_PASSWORD: "${{ secrets.TARGET_DATABASE_PASSWORD }}"
-      CUSTOM_PARAMS: "${{ secrets.CUSTOM_PARAMS }}" # Secure method of adding custom Flyway Parameters (Example -X for debug)
       EXECUTE_BUILD: 'true' # Turn to false to skip the build stage tasks
-      publishArtifacts: 'true' # Turn to false to skip the artifact upload
+    
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v6
 
-      # Install Flyway CLI
+      # Optional - Install Flyway CLI
       - name: Flyway - CLI Install
         if: env.FLYWAY_CLI_INSTALL_CHECK == 'true'
         uses: red-gate/setup-flyway@v3
@@ -99,7 +81,7 @@ jobs:
           target-user: ${{ env.TARGET_DATABASE_USERNAME }}
           target-password: ${{ env.TARGET_DATABASE_PASSWORD }}
           skip-drift-check: true
-          extra-args: "${{ env.CUSTOM_PARAMS }}"
+          extra-args: "${{ secrets.CUSTOM_PARAMS }}"
 
       # Step 3 (Optional) - Undo all relevant migrations using corresponding rollback script, to validate they can be run. This helps to reduce the chance the script will fail during a real life rollback scenario 
       - name: undo Build DB
@@ -111,11 +93,11 @@ jobs:
           target-user: ${{ env.TARGET_DATABASE_USERNAME }}
           target-password: ${{ env.TARGET_DATABASE_PASSWORD }}
           skip-drift-check: true
-          extra-args: "${{ env.CUSTOM_PARAMS }}"
+          extra-args: "${{ secrets.CUSTOM_PARAMS }}"
 
       # GitHub - After migration scripts are validated, publish them as an artifact
       - name: Publish Validated Migration Scripts as Artifact
-        if: ${{ env.publishArtifacts == 'true' && success() }}
+        if: ${{ success() }}
         uses: actions/upload-artifact@v4
         with: 
           name: flyway-build-artifact
@@ -132,33 +114,25 @@ jobs:
 
   test:
     name: Deploy Test
-    # The type of runner that the job will run on
     runs-on: "self-hosted" # Options - self-hosted/ubuntu-latest/windows-latest (See here for more details on GitHub hosted runners - https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners)
     environment: 'test' # This refers to GitHub's Environment name
-    if: ${{ true }} #Set this variable to false to temporarily disable the job
+    if: ${{ true }} # Set this variable to false to temporarily disable the job
     needs: build
     env:
-      stage: 'Test'
-      DATABASE_NAME: "AutoPilotTest"
       ENVIRONMENT: "Test" # Refers to the environment in the Flyway Project TOML file.
       TARGET_DATABASE_USERNAME: "${{ secrets.TARGET_DATABASE_USERNAME }}"
       TARGET_DATABASE_PASSWORD: "${{ secrets.TARGET_DATABASE_PASSWORD }}"
       REPORT_ENVIRONMENT: "Check"
       REPORT_DATABASE_USERNAME: "${{ secrets.TARGET_DATABASE_USERNAME }}" # Optional - Change to a different secret if the connection details for the report database differs from the target
       REPORT_DATABASE_PASSWORD: "${{ secrets.TARGET_DATABASE_PASSWORD }}" # Optional - Change to a different secret if the connection details for the report database differs from the target
-      CUSTOM_PARAMS: "${{ secrets.CUSTOM_PARAMS }}" # Secure method of adding custom Flyway Parameters (Example -X for debug)
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/download-artifact@v4
         with:
           name: flyway-build-artifact
 
-      # Optional - List out all build artifact files on disk, helpful for debugging
-      - name: Display structure of downloaded files
-        run: ls -R
-
-      # Install Flyway CLI
+      # Optional - Install Flyway CLI
       - name: Flyway - CLI Install
         if: env.FLYWAY_CLI_INSTALL_CHECK == 'true'
         uses: red-gate/setup-flyway@v3
@@ -181,7 +155,7 @@ jobs:
           build-password: ${{ env.REPORT_DATABASE_PASSWORD }}
           build-ok-to-erase: true
           pre-deployment-report-name: "flyway-checks-${{ env.ENVIRONMENT }}.html"
-          extra-args: "\"-publishResult=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-flywayServicePublish.publishReport=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-reportEnabled=${{ env.FLYWAY_PUBLISH_RESULT }}\" ${{ env.CUSTOM_PARAMS }}"
+          extra-args: "\"-publishResult=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-flywayServicePublish.publishReport=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-reportEnabled=${{ env.FLYWAY_PUBLISH_RESULT }}\" ${{ secrets.CUSTOM_PARAMS }}"
         continue-on-error: true
 
       # Step 2 - Deploy pending migrations to target database
@@ -191,39 +165,31 @@ jobs:
           target-environment: ${{ env.ENVIRONMENT }}
           target-user: ${{ env.TARGET_DATABASE_USERNAME }}
           target-password: ${{ env.TARGET_DATABASE_PASSWORD }}
-          extra-args: "\"-publishResult=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-flywayServicePublish.publishReport=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-reportEnabled=${{ env.FLYWAY_PUBLISH_RESULT }}\" ${{ env.CUSTOM_PARAMS }}"
+          extra-args: "\"-publishResult=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-flywayServicePublish.publishReport=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-reportEnabled=${{ env.FLYWAY_PUBLISH_RESULT }}\" ${{ secrets.CUSTOM_PARAMS }}"
 
   prod:
     name: Deploy Prod
-    # The type of runner that the job will run on
     runs-on: "self-hosted" # Options - self-hosted/ubuntu-latest/windows-latest (See here for more details on GitHub hosted runners - https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners)
     environment: 'prod'
     if: ${{ true }} #Set this variable to false to temporarily disable the job
     needs: test
     env:
-      stage: 'Prod'
-      DATABASE_NAME: "AutoPilotProd"
       ENVIRONMENT: "Prod" # Refers to the environment name in the Flyway Project TOML file.
       TARGET_DATABASE_USERNAME: "${{ secrets.TARGET_DATABASE_USERNAME }}" 
       TARGET_DATABASE_PASSWORD: "${{ secrets.TARGET_DATABASE_PASSWORD }}" 
       REPORT_ENVIRONMENT: "Check"
       REPORT_DATABASE_USERNAME: "${{ secrets.TARGET_DATABASE_USERNAME }}" # Optional - Change to a different secret if the connection details for the report database differs from the target
       REPORT_DATABASE_PASSWORD: "${{ secrets.TARGET_DATABASE_PASSWORD }}" # Optional - Change to a different secret if the connection details for the report database differs from the target
-      CUSTOM_PARAMS: "${{ secrets.CUSTOM_PARAMS }}" # Secure method of adding custom Flyway Parameters (Example -X for debug)
       generateReport: 'true' # Turn to false to skip the CHECK report stage tasks
       FLYWAY_CHECK_DRIFT_ON_MIGRATE: 'true' # Turn to false to skip the Drift Report upload to Flyway Pipelines (If enabled)
+    
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/download-artifact@v4
         with:
           name: flyway-build-artifact
-
-      # Optional - List out all build artifact files on disk, helpful for debugging
-      - name: Display structure of downloaded files
-        run: ls -R
-
-      # Optional - If Enabled, Flyway CLI will be validated and installed if not present
-      # Install Flyway CLI
+      
+      # Optional - Install Flyway CLI
       - name: Flyway - CLI Install
         if: env.FLYWAY_CLI_INSTALL_CHECK == 'true'
         uses: red-gate/setup-flyway@v3
@@ -246,7 +212,7 @@ jobs:
           build-password: ${{ env.REPORT_DATABASE_PASSWORD }}
           build-ok-to-erase: true
           pre-deployment-report-name: "flyway-checks-${{ env.ENVIRONMENT }}.html"
-          extra-args: "\"-publishResult=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-flywayServicePublish.publishReport=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-reportEnabled=${{ env.FLYWAY_PUBLISH_RESULT }}\" ${{ env.CUSTOM_PARAMS }}"
+          extra-args: "\"-publishResult=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-flywayServicePublish.publishReport=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-reportEnabled=${{ env.FLYWAY_PUBLISH_RESULT }}\" ${{ secrets.CUSTOM_PARAMS }}"
         continue-on-error: true
 
       # Step 3 - Deploy pending migrations to target database
@@ -257,4 +223,4 @@ jobs:
           target-environment: ${{ env.ENVIRONMENT }}
           target-user: ${{ env.TARGET_DATABASE_USERNAME }}
           target-password: ${{ env.TARGET_DATABASE_PASSWORD }}
-          extra-args: "\"-publishResult=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-flywayServicePublish.publishReport=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-reportEnabled=${{ env.FLYWAY_PUBLISH_RESULT }}\" ${{ env.CUSTOM_PARAMS }}"
+          extra-args: "\"-publishResult=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-flywayServicePublish.publishReport=${{ env.FLYWAY_PUBLISH_RESULT }}\" \"-reportEnabled=${{ env.FLYWAY_PUBLISH_RESULT }}\" ${{ secrets.CUSTOM_PARAMS }}"
