@@ -1,5 +1,5 @@
 # ===========================
-# Pipeline Name: GitHub-Flyway-CICD-Pipeline_Linux.yml
+# Pipeline Name: GitHub-Flyway-CICD-Pipeline.yml
 # Version: 2.0.0
 # Author: Redgate Software Ltd
 # Last Updated: 2026-03-17
@@ -7,7 +7,7 @@
 # Description: GitHub DevOps YAML Pipeline for Linux Runners
 # ===========================
  
-name: Redgate Flyway (Linux)
+name: Redgate Flyway
 
 # Step 1: Authenticate Flyway with Personal Access Tokens (PATs)
 ## Details on how to do generate a PAT can be found here: https://documentation.red-gate.com/flyway/flyway-cli-and-api/tutorials/tutorial-personal-access-tokens

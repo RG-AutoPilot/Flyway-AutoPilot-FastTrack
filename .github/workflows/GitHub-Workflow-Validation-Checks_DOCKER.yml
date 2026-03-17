@@ -134,7 +134,7 @@ jobs:
     if: github.repository_owner == 'RG-AutoPilot'  # Only runs if the repo is in a specific organisation
     name: Run Flyway Pipeline
     needs: setup-validation-environment
-    uses: ./.github/workflows/GitHub-Flyway-CICD-Pipeline_Linux.yml
+    uses: ./.github/workflows/GitHub-Flyway-CICD-Pipeline.yml
     secrets: inherit  # Inherit existing secrets but allow environment overrides
 
   cleanup:
