@@ -4,7 +4,7 @@
 # Author: Redgate Software Ltd
 # Last Updated: 2026-03-17
 # Last Update Notes: Use Redgate GitHub Actions
-# Description: GitHub DevOps YAML Pipeline for Linux Runners
+# Description: GitHub DevOps YAML Pipeline
 # ===========================
  
 name: Redgate Flyway
@@ -21,6 +21,8 @@ name: Redgate Flyway
 ### TARGET_DATABASE_USERNAME: Leave blank if using integratedSecurity (default).
 ### TARGET_DATABASE_PASSWORD: Leave blank if using integratedSecurity (default).
 ### CUSTOM_PARAMS: Optional - Used for passing custom Flyway Parameters to each Flyway command
+
+# Step 3: Review the Flyway GitHub actions documentation - https://github.com/red-gate/flyway-actions
 
 on:
   workflow_dispatch:
@@ -60,15 +62,7 @@ jobs:
       - name: Clean Build DB
         if: ${{ env.EXECUTE_BUILD == 'true' && success() }}
         run: |
-          flyway info clean info \
-            -environment="${{ env.TARGET_DATABASE_ENVIRONMENT }}" \
-            -user="${{ env.TARGET_DATABASE_USERNAME }}" \
-            -password="${{ env.TARGET_DATABASE_PASSWORD }}" \
-            -configFiles="${{ GITHUB.WORKSPACE }}/flyway.toml" \
-            -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" \
-            -cleanDisabled='false' \
-            "-environments.${{ env.TARGET_DATABASE_ENVIRONMENT }}.provisioner=clean" \
-            ${{ secrets.CUSTOM_PARAMS }}
+          flyway info clean info -environment="${{ env.TARGET_DATABASE_ENVIRONMENT }}" -user="${{ env.TARGET_DATABASE_USERNAME }}" -password="${{ env.TARGET_DATABASE_PASSWORD }}" -configFiles="${{ GITHUB.WORKSPACE }}/flyway.toml" -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -cleanDisabled='false' "-environments.${{ env.TARGET_DATABASE_ENVIRONMENT }}.provisioner=clean" ${{ secrets.CUSTOM_PARAMS }}
 
       # Step 2 - Migrate all scripts from the migration folder, to verify they can be deployed against an empty database. This is the quickest way to get feedback about problematic scripts
       - name: Migrate Build DB
@@ -90,7 +84,7 @@ jobs:
           target-environment: ${{ env.TARGET_DATABASE_ENVIRONMENT }}
           target-user: ${{ env.TARGET_DATABASE_USERNAME }}
           target-password: ${{ env.TARGET_DATABASE_PASSWORD }}
-          skip-drift-check: true
+          skip-drift-check: true 
           extra-args: "${{ secrets.CUSTOM_PARAMS }}"
 
       # GitHub - After migration scripts are validated, publish them as an artifact
