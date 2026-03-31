@@ -1,9 +1,9 @@
 # ===========================
 # Pipeline Name: GitHub-Flyway-CICD-Pipeline.yml
-# Version: 2.0.0
+# Version: 2.0.1
 # Author: Redgate Software Ltd
 # Last Updated: 2026-03-17
-# Last Update Notes: Use Redgate GitHub Actions
+# Last Update Notes: Added reprovision mode to deploy step in BUILD stage
 # Description: GitHub DevOps YAML Pipeline
 # ===========================
  
@@ -58,27 +58,22 @@ jobs:
           token: ${{ secrets.FLYWAY_TOKEN }}
           i-agree-to-the-eula: true
 
-      # Step 1 - Ensure the Build Database is cleaned of all objects, meaning the build starts from scratch
-      - name: Clean Build DB
-        if: ${{ env.EXECUTE_BUILD == 'true' && success() }}
-        run: |
-          flyway info clean info -environment="${{ env.TARGET_DATABASE_ENVIRONMENT }}" -user="${{ env.TARGET_DATABASE_USERNAME }}" -password="${{ env.TARGET_DATABASE_PASSWORD }}" -configFiles="${{ GITHUB.WORKSPACE }}/flyway.toml" -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -cleanDisabled='false' "-environments.${{ env.TARGET_DATABASE_ENVIRONMENT }}.provisioner=clean" ${{ secrets.CUSTOM_PARAMS }}
-
       # Step 2 - Migrate all scripts from the migration folder, to verify they can be deployed against an empty database. This is the quickest way to get feedback about problematic scripts
       - name: Migrate Build DB
         if: ${{ env.EXECUTE_BUILD == 'true' && success() }}
-        uses: red-gate/flyway-actions/migrations/deploy@v1
+        uses: red-gate/flyway-actions/migrations/deploy@v2
         with:
           target-environment: ${{ env.TARGET_DATABASE_ENVIRONMENT }}
           target-user: ${{ env.TARGET_DATABASE_USERNAME }}
           target-password: ${{ env.TARGET_DATABASE_PASSWORD }}
+          provision-mode: "reprovision" # This will drop and recreate the target database schema as part of the prepare step. Only use for throwaway environments
           skip-drift-check: true
           extra-args: "${{ secrets.CUSTOM_PARAMS }}"
 
       # Step 3 (Optional) - Undo all relevant migrations using corresponding rollback script, to validate they can be run. This helps to reduce the chance the script will fail during a real life rollback scenario 
       - name: undo Build DB
         if: ${{ env.EXECUTE_BUILD == 'true' && success() }}
-        uses: red-gate/flyway-actions/migrations/undo@v1
+        uses: red-gate/flyway-actions/migrations/undo@v2
         with:
           target-migration-version: ${{ env.FIRST_UNDO_SCRIPT }}
           target-environment: ${{ env.TARGET_DATABASE_ENVIRONMENT }}
@@ -136,7 +131,7 @@ jobs:
 
       # Step 1 - Create Check Report
       - name: Create Check Reports
-        uses: red-gate/flyway-actions/migrations/checks@v1
+        uses: red-gate/flyway-actions/migrations/checks@v2
         with:
           target-environment: ${{ env.TARGET_DATABASE_ENVIRONMENT }}
           target-user: ${{ env.TARGET_DATABASE_USERNAME }}
@@ -150,7 +145,7 @@ jobs:
 
       # Step 2 - Deploy pending migrations to target database
       - name: Deploy to Test DB
-        uses: red-gate/flyway-actions/migrations/deploy@v1
+        uses: red-gate/flyway-actions/migrations/deploy@v2
         with:
           target-environment: ${{ env.TARGET_DATABASE_ENVIRONMENT }}
           target-user: ${{ env.TARGET_DATABASE_USERNAME }}
@@ -189,7 +184,7 @@ jobs:
 
       # Step 1 - Create Check Report
       - name: Create Check Reports
-        uses: red-gate/flyway-actions/migrations/checks@v1
+        uses: red-gate/flyway-actions/migrations/checks@v2
         with:
           target-environment: ${{ env.TARGET_DATABASE_ENVIRONMENT }}
           target-user: ${{ env.TARGET_DATABASE_USERNAME }}
@@ -204,7 +199,7 @@ jobs:
       # Step 3 - Deploy pending migrations to target database
       - name: Deploy to Production DB
         if: success()
-        uses: red-gate/flyway-actions/migrations/deploy@v1
+        uses: red-gate/flyway-actions/migrations/deploy@v2
         with:
           target-environment: ${{ env.TARGET_DATABASE_ENVIRONMENT }}
           target-user: ${{ env.TARGET_DATABASE_USERNAME }}
