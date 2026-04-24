@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DatabaseInformation Version="3">
   <ScriptFileEncoding>UTF8</ScriptFileEncoding>
-  <DefaultCollation>Latin1_General_CI_AS</DefaultCollation>
+  <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
   <DefaultSchema>dbo</DefaultSchema>
   <DefaultUser>dbo</DefaultUser>
   <DefaultFilegroup>PRIMARY</DefaultFilegroup>
-  <DatabaseVersion>13</DatabaseVersion>
-  <ServerVersion>13.0</ServerVersion>
-  <CompatibilityLevel>130</CompatibilityLevel>
+  <DatabaseVersion>17</DatabaseVersion>
+  <ServerVersion>17.0</ServerVersion>
+  <CompatibilityLevel>170</CompatibilityLevel>
   <EngineEdition>Enterprise</EngineEdition>
   <IsAzure>False</IsAzure>
   <ScriptFolderType>Default</ScriptFolderType>
